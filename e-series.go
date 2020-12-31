@@ -60,7 +60,7 @@ func getValues(m int, start, stop float64) []float64 {
 	for i := 0; i < orders; i++ {
 		orderStart := i * m
 		for j := 0; j < m; j++ {
-			curVal = math.Round(eSeriesList[j]*math.Pow10(i)*100.0) / 100.0
+			curVal = (math.Round(eSeriesList[j]*math.Pow10(i)*100.0) / 100.0) * start
 			values[orderStart+j] = curVal
 		}
 	}

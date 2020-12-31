@@ -25,6 +25,26 @@ func root(a float64, n int) float64 {
 }
 
 func equalByTolerance(a, b, tolerance float64) bool {
-	//fmt.Println("eq", a, b, a*tolerance, math.Abs(a-b) <= a*tolerance)
 	return math.Abs(a-b) <= a*tolerance
+}
+
+func findNearestBase10(v float64) float64 {
+	goUp := v < 1
+	divs := 0
+	for {
+		if v <= 10 && v >= 1 {
+			break
+		}
+		if goUp {
+			v *= 10
+		} else {
+			v /= 10
+		}
+		divs++
+	}
+	num := math.Pow10(divs)
+	if goUp {
+		return 1 / num
+	}
+	return num
 }
