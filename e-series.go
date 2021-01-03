@@ -65,6 +65,10 @@ func getValues(m int, start, stop float64) []float64 {
 		}
 	}
 	// also add the last value
-	values[count-1] = math.Round(eSeriesList[0]*math.Pow10(orders+1)*100.0) / 100.0
+	values[count-1] = (math.Round(math.Pow10(orders)*100.0) / 100.0) * start
 	return values
+}
+
+func toleranceFromESeries(eSeries int) float64 {
+	return (40.0 / (float64(eSeries) / 3.0)) / 100.0
 }

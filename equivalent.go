@@ -20,10 +20,26 @@ func equivalentValues(c *cli.Context, invert bool, unit string) error {
 	// Collect user input
 	eSeries := c.Int("component-series")
 	maxNum := c.Int("max-components")
-	tolerance := c.Float64("tolerance") / 100.0
+	tolerance := getTolerance(c, eSeries)
 	desiredValue, _, err := humanize.ParseSI(c.String("desired-value"))
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to parse desired value: %w", err)
+	}
+	var voltageHandling float64
+	vStr := c.String("voltage-handling")
+	if vStr != "" {
+		voltageHandling, _, err = humanize.ParseSI(vStr)
+		if err != nil {
+			return fmt.Errorf("unable to parse voltage handling value: %w", err)
+		}
+	}
+	var powerHandling float64
+	vStr = c.String("power-handling")
+	if vStr != "" {
+		powerHandling, _, err = humanize.ParseSI(vStr)
+		if err != nil {
+			return fmt.Errorf("unable to parse power handling value: %w", err)
+		}
 	}
 
 	// Find suitable values based on the desired value
@@ -87,14 +103,24 @@ func equivalentValues(c *cli.Context, invert bool, unit string) error {
 	for _, v := range foundValues {
 		vStr := humanize.SI(v.value, unit)
 		vTotStr := humanize.SI(v.totalValue, unit)
+		var voltTot, parVolt string
+		if voltageHandling != 0 {
+			voltTot = fmt.Sprintf(" @%s", humanize.SI(voltageHandling, voltageUnit))
+			parVolt = fmt.Sprintf(" @%s", humanize.SI(voltageHandling/float64(v.numP), voltageUnit))
+		}
+		var powerTot, parPower string
+		if powerHandling != 0 {
+			powerTot = fmt.Sprintf(" @%s", humanize.SI(powerHandling, powerUnit))
+			parPower = fmt.Sprintf(" @%s", humanize.SI(powerHandling/float64(v.numP), powerUnit))
+		}
 		if v.numP == 1 && v.numS == 1 {
 			continue
 		} else if v.numP == 1 {
-			fmt.Println(fmt.Sprintf("%dx %s in series = %s", v.numS, vStr, vTotStr))
+			fmt.Println(fmt.Sprintf("%dx %s in series%s = %s%s%s", v.numS, vStr, voltTot, vTotStr, voltTot, powerTot))
 		} else if v.numS == 1 {
-			fmt.Println(fmt.Sprintf("%dx %s in parallel = %s", v.numP, vStr, vTotStr))
+			fmt.Println(fmt.Sprintf("%dx %s in parallel%s%s = %s%s%s", v.numP, vStr, parVolt, parPower, vTotStr, voltTot, powerTot))
 		} else {
-			fmt.Println(fmt.Sprintf("%dx (%dx %s in parallel) in series = %s", v.numS, v.numP, vStr, vTotStr))
+			fmt.Println(fmt.Sprintf("%dx (%dx %s in parallel%s%s) in series = %s%s%s", v.numS, v.numP, vStr, parVolt, parPower, vTotStr, voltTot, powerTot))
 		}
 	}
 	return nil
