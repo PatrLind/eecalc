@@ -23,7 +23,7 @@ func main() {
 		EnableBashCompletion: true,
 		Commands: []*cli.Command{
 			{
-				Name:        "rc-time-contant",
+				Name:        "rc-time-constant",
 				Aliases:     []string{"rct"},
 				Usage:       "Calculate RC time constant",
 				Description: "The function will solve for a missing value (t, C or R)",
