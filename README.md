@@ -1,4 +1,5 @@
 # eecalc
+
 Simple calculator for electrical engineering things
 
 I am writing this application for my own purposes. I add functionality as I want to experiment with new things related to electrical engineering calculations.
@@ -7,13 +8,15 @@ If anyone finds it useful please go ahead and use it, but I cannot guarantee tha
 The application will give component value suggestions based on a selectable E-series and component tolerance where appropriate.
 
 ## Functions
-### rc-time-contant - Calculate RC time constant
-```
+
+### rc-time-constant - Calculate RC time constant
+
+```text
 NAME:
-   eecalc.exe rc-time-contant - Calculate RC time constant
+   eecalc.exe rc-time-constant - Calculate RC time constant
 
 USAGE:
-   eecalc.exe rc-time-contant [command options] [arguments...]
+   eecalc.exe rc-time-constant [command options] [arguments...]
 
 DESCRIPTION:
    The function will solve for a missing value (t, C or R)
@@ -27,15 +30,18 @@ OPTIONS:
    --tolerance value, -t value              tolerance of the desired resistance (%) (default: 0)
    --help, -h                               show help (default: false)
 ```
+
 Examples:
-```
-.\eecalc.exe rc-time-contant -c 100u -r 4.7k
+
+```text
+.\eecalc.exe rc-time-constant -c 100u -r 4.7k
 τ = time constant = approximately 63% of the charge time
 τ = CR = 470 ms
 Time to fully charged capacitor = 5τ = 2.35 s
 ```
-```
-.\eecalc.exe rc-time-contant -c 100u --time 1.12s
+
+```text
+.\eecalc.exe rc-time-constant -c 100u --time 1.12s
 τ = time constant = approximately 63% of the charge time
 R = τ/C = 11.2 kΩ
 Suggested component values for R (5%):
@@ -44,7 +50,8 @@ Time to fully charged capacitor = 5τ = 5.6 s
 ```
 
 ### series-resistor - Calculate series resistor (ex: for LED)
-```
+
+```text
 NAME:
    eecalc.exe series-resistor - Calculate series resistor (ex: for LED)
 
@@ -59,8 +66,10 @@ OPTIONS:
    --tolerance value, -t value         tolerance of the desired resistance (%) (default: 0)
    --help, -h                          show help (default: false)
 ```
+
 Example:
-```
+
+```text
 .\eecalc.exe series-resistor -v 12 -i 5m -d 2.2
 R = 1.96 kΩ
 P = 49 mW
@@ -68,8 +77,10 @@ Suggested min power rating: 98 mW to 490 mW
 Suggested component values (5%):
   2 kΩ
 ```
+
 ### voltage-divider - Calculate voltage devider values
-```
+
+```text
 NAME:
    eecalc.exe voltage-divider - Calculate voltage devider values
 
@@ -86,8 +97,10 @@ OPTIONS:
    --tolerance value, -t value         tolerance of the desired resistance (%) (default: 0)
    --help, -h                          show help (default: false)
 ```
+
 Example:
-```
+
+```text
 .\eecalc.exe voltage-divider --vs 12 --vo 3.3 --r1 100k
 R2: 37.931034 kΩ
 Power supply power delivery: 1.044 mW (87 µA)
@@ -100,7 +113,8 @@ Suggested component values for R2 (5%):
 ```
 
 ### equivalent - Calculate equivalent components
-```
+
+```text
 NAME:
    eecalc.exe equivalent - calculate equivalent components
 
@@ -116,8 +130,10 @@ COMMANDS:
 OPTIONS:
    --help, -h  show help (default: false)
 ```
+
 Example:
-```
+
+```text
  .\eecalc.exe equivalent resistors --desired-value 4.7k --max-components 5 --power-handling 3W
 2x (2x 4.7 kΩ in parallel @1.5 W) in series = 4.7 kΩ @3 W
 2x 2.4 kΩ in series = 4.8 kΩ @3 W
@@ -129,8 +145,9 @@ Example:
 ```
 
 ## How to build / install
-* Make sure you have downloaded and installed Go (golang) and git
-* `git clone https://github.com/PatrLind/eecalc`
-* `cd eecalc`
-* `go install` this will build and copy the application to your go bin folder (normally `$GOPATH/bin`, `/home/USER/go/bin`, `c:\users\USER\go\bin`).
-* If the `$GOPATH/bin` folder is not in you `PATH`, copy the application to a folder that is. For example: `/use/local/bin` or `c:\windows`
+
+- Make sure you have downloaded and installed Go (golang) and git
+- `git clone https://github.com/PatrLind/eecalc`
+- `cd eecalc`
+- `go install` this will build and copy the application to your go bin folder (normally `$GOPATH/bin`, `/home/USER/go/bin`, `c:\users\USER\go\bin`).
+- If the `$GOPATH/bin` folder is not in you `PATH`, copy the application to a folder that is. For example: `/usr/local/bin` or `c:\windows`
